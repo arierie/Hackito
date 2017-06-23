@@ -5,10 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.arieridwan.hackito.R;
@@ -45,7 +43,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
         holder.tvTime.setText(StringHelper.getDateCurrentTimeZone(mData.getTime()));
         holder.tvUrl.setText(StringHelper.getHost(mData.getUrl()));
         try{
-            count = String.valueOf(mList.get(position).getKids().size());
+            count = String.valueOf(mData.getDescendants());
         }catch (Exception e){
             count = "0";
         }
