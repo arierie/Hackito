@@ -6,4 +6,5 @@ package id.arieridwan.hackito.utils;
 
 public class Constants {
     public static final String BASE_URL = "https://hacker-news.firebaseio.com/v0/";
+    public static final String COMMENT = "comment";
 }

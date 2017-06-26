@@ -4,21 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp">
 
     <RelativeLayout
-        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:text="In Search of Fear" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_title"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_web_24dp" />
+            app:srcCompat="@drawable/ic_url_24dp" />
 
         <TextView
             android:id="@+id/tv_url"
@@ -39,7 +39,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/iv_url"
             android:textColor="@color/colorBlack"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="medium.com" />
 
         <ImageView
@@ -59,7 +59,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/iv_author"
             android:textColor="@color/colorBlack"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="By ascertain" />
 
         <View

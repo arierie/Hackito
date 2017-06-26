@@ -16,7 +16,7 @@ import java.util.TimeZone;
  */
 
 public class StringHelper {
-    public static String getDateCurrentTimeZone(long timestamp) {
+    public static String getRelativeTime(long timestamp) {
         try{
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getDefault();
@@ -30,6 +30,7 @@ public class StringHelper {
                             DateUtils.SECOND_IN_MILLIS));
             return relativeTIme;
         }catch (Exception e) {
+            Log.e("getRelativeTime: ", e.getMessage().toString());
         }
         return "-";
     }
@@ -40,7 +41,7 @@ public class StringHelper {
             return  domain.startsWith("www.") ? domain.substring(4) : domain;
         }
         catch (MalformedURLException e) {
-            Log.e("getHost: ", e.getMessage());
+            Log.e("getHost: ", e.getMessage().toString());
             return "-";
         }
     }

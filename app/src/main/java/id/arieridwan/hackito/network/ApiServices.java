@@ -2,7 +2,8 @@ package id.arieridwan.hackito.network;
 
 import java.util.List;
 
-import id.arieridwan.hackito.models.Item;
+import id.arieridwan.hackito.models.ItemComments;
+import id.arieridwan.hackito.models.ItemStories;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -14,9 +15,12 @@ import rx.Observable;
 public interface ApiServices {
 
     @GET("item/{id}.json")
-    Observable<Item> item(@Path("id") long id);
+    Observable<ItemStories> item(@Path("id") int id);
+
+    @GET("item/{id}.json")
+    Observable<ItemComments> comment(@Path("id") int id);
 
     @GET("topstories.json")
-    Observable<List<Long>> topStories();
+    Observable<List<Integer>> topStories();
 
 }

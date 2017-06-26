@@ -1,13 +1,14 @@
 package id.arieridwan.hackito.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by arieridwan on 20/06/2017.
  */
 
-public class Item {
+public class ItemStories implements Serializable {
 
     @SerializedName("by")
     private String author;
@@ -18,7 +19,11 @@ public class Item {
     private String title;
     private String type;
     private String url;
-    private List<Long> kids;
+    private List<Integer> kids;
+
+    public ItemStories() {
+
+    }
 
     public int getDescendants() {
         return descendants;
@@ -84,11 +89,11 @@ public class Item {
         this.author = author;
     }
 
-    public List<Long> getKids() {
+    public List<Integer> getKids() {
         return kids;
     }
 
-    public void setKids(List<Long> kids) {
+    public void setKids(List<Integer> kids) {
         this.kids = kids;
     }
 }

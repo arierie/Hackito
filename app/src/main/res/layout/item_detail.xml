@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="2dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/iv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            app:srcCompat="@drawable/ic_person_24dp" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/iv_user_name"
+            android:textColor="@color/colorGrey"
+            android:textSize="14sp"
+            tools:text="By arieridwan8" />
+
+        <TextView
+            android:id="@+id/tv_comment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/colorGrey"
+            android:textSize="12sp"
+            tools:text="2 hours ago" />
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_user_name"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@+id/view"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            tools:text="@string/sample_comment" />
+
+        <ImageView
+            android:id="@+id/iv_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_comment"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@+id/tv_reply"
+            app:srcCompat="@drawable/ic_reply_24dp" />
+
+        <TextView
+            android:id="@+id/tv_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_comment"
+            android:layout_marginTop="12dp"
+            android:paddingRight="16dp"
+            android:text="Replies"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
