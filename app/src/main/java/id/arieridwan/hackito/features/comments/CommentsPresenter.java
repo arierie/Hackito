@@ -1,4 +1,4 @@
-package id.arieridwan.hackito.features.detail;
+package id.arieridwan.hackito.features.comments;
 
 import android.util.Log;
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ import rx.schedulers.Schedulers;
  * Created by arieridwan on 24/06/2017.
  */
 
-public class DetailPresenter extends BasePresenter<DetailView> {
+public class CommentsPresenter extends BasePresenter<CommentsView> {
 
-    public DetailPresenter(DetailView view) {
+    public CommentsPresenter(CommentsView view) {
         attachView(view);
     }
 

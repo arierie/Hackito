@@ -52,6 +52,7 @@ public class StoriesActivity extends MvpActivity<StoriesPresenter>
         rvStories.setLayoutManager(mLayoutManager);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.post(() -> onRefresh());
+
         rvStories.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

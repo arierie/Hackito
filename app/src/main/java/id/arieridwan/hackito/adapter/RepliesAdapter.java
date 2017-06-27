@@ -57,6 +57,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         TextView tvCommentTime;
         @BindView(R.id.tv_comment)
         TextView tvComment;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

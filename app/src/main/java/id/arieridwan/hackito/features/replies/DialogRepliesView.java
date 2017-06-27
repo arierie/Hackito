@@ -9,6 +9,7 @@ import id.arieridwan.hackito.models.ItemComments;
 
 public interface DialogRepliesView {
     void getItemReplies(List<ItemComments> list);
+    void getItemFailed();
     void startLoading();
     void stopLoading();
 }

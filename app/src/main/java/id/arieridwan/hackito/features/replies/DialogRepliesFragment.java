@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,6 +36,10 @@ public class DialogRepliesFragment extends DialogFragment implements DialogRepli
 
     @BindView(R.id.rv_replies)
     RecyclerView rvReplies;
+    @BindView(R.id.progressview)
+    RelativeLayout progressview;
+    @BindView(R.id.tv_label)
+    TextView tvLabel;
     private List<ItemComments> mList = new ArrayList<>();
     private RepliesAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -73,14 +78,30 @@ public class DialogRepliesFragment extends DialogFragment implements DialogRepli
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().setTitle("Replies");
         mAdapter = new RepliesAdapter(mList);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvReplies.setAdapter(mAdapter);
         rvReplies.setLayoutManager(mLayoutManager);
         apiServices = ApiClient.getRetrofit().create(ApiServices.class);
         presenter = new DialogRepliesPresenterImpl(this, apiServices);
-        presenter.loadReplies(getArguments().getIntegerArrayList(Constants.COMMENT));
+        try {
+            List<Integer> integers = getArguments().getIntegerArrayList(Constants.COMMENT);
+            if (integers != null) {
+                if (integers.size() != 0)
+                    presenter.loadReplies(getArguments().getIntegerArrayList(Constants.COMMENT));
+                else
+                    noReplies();
+            } else {
+                noReplies();
+            }
+        } catch (Exception e) {
+            Log.e("onViewCreated: ", e.getMessage().toString());
+        }
+    }
+
+    private void noReplies(){
+        tvLabel.setText(R.string.no_replies);
+        progressview.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -90,12 +111,19 @@ public class DialogRepliesFragment extends DialogFragment implements DialogRepli
     }
 
     @Override
+    public void getItemFailed() {
+        tvLabel.setText(R.string.no_replies);
+    }
+
+    @Override
     public void startLoading() {
-        Log.e("startLoading: ", "loading..");
+        progressview.setVisibility(View.VISIBLE);
+        rvReplies.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void stopLoading() {
-        Log.e("stopLoading: ", "loading done.");
+        progressview.setVisibility(View.INVISIBLE);
+        rvReplies.setVisibility(View.VISIBLE);
     }
 }

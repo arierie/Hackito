@@ -71,8 +71,10 @@
             android:layout_below="@+id/tv_comment"
             android:layout_marginTop="12dp"
             android:paddingRight="16dp"
-            android:text="Replies"
-            android:textSize="14sp" />
+            android:text="Show Replies"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

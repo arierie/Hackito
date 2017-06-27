@@ -1,17 +1,21 @@
-package id.arieridwan.hackito.features.detail;
+package id.arieridwan.hackito.features.comments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thefinestartist.finestwebview.FinestWebView;
 
@@ -21,13 +25,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.arieridwan.hackito.R;
-import id.arieridwan.hackito.adapter.DetailAdapter;
+import id.arieridwan.hackito.adapter.CommentsAdapter;
 import id.arieridwan.hackito.base.MvpActivity;
 import id.arieridwan.hackito.models.ItemComments;
 import id.arieridwan.hackito.models.ItemStories;
 import id.arieridwan.hackito.utils.Constants;
 
-public class DetailActivity extends MvpActivity<DetailPresenter> implements DetailView,
+public class CommentsActivity extends MvpActivity<CommentsPresenter> implements CommentsView,
         SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.rv_comment)
@@ -48,27 +52,32 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
     SwipeRefreshLayout swipeLayout;
     @BindView(R.id.tv_label)
     TextView tvLabel;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout toolbarLayout;
 
     private List<Integer> mComment = new ArrayList<>();
     private List<ItemComments> mItemComments = new ArrayList<>();
 
-    private DetailAdapter mAdapter;
+    private CommentsAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
     @Override
-    protected DetailPresenter onCreatePresenter() {
-        return new DetailPresenter(this);
+    protected CommentsPresenter onCreatePresenter() {
+        return new CommentsPresenter(this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_comments);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mAdapter = new DetailAdapter(mItemComments);
+        toolbarLayout.setTitle(getString(R.string.app_name));
+        toolbarLayout.setExpandedTitleColor(Color.TRANSPARENT);
+        toolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        mAdapter = new CommentsAdapter(mItemComments);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.post(() -> onRefresh());
@@ -77,7 +86,8 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
         rvComment.setLayoutManager(mLayoutManager);
     }
 
-    private void getIntentExtra() {
+    @Override
+    public void getIntentExtra() {
         Intent i = getIntent();
         if (i.hasExtra(Constants.COMMENT)) {
             try {
@@ -88,7 +98,8 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
         }
     }
 
-    private void addListFromSerializable(Intent i) {
+    @Override
+    public void addListFromSerializable(Intent i) {
         ItemStories mItem = (ItemStories) i.getSerializableExtra(Constants.COMMENT);
         setData(mItem);
         if (mItem.getKids() != null) {
@@ -114,7 +125,11 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
         tvTitle.setText(item.getTitle());
         tvSubtitle.setText("By " + item.getAuthor());
         fab.setOnClickListener(view -> {
-            new FinestWebView.Builder(activity).show(item.getUrl());
+            if (!TextUtils.isEmpty(item.getUrl())) {
+                new FinestWebView.Builder(activity).show(item.getUrl());
+            } else {
+                Toast.makeText(this, "Url is empty", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

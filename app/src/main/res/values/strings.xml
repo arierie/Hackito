@@ -3,4 +3,5 @@
     <string name="sample_comment">Aw shucks, guys ... you make me blush with your compliments.</string>
     <string name="loading_text">Loading data..</string>
     <string name="error_text">Oops, something happened..</string>
+    <string name="no_replies">No replies yet</string>
 </resources>

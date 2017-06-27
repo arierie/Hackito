@@ -28,10 +28,9 @@ class DialogRepliesPresenterImpl implements DialogRepliesPresenter {
 
     @Override
     public void loadReplies(List<Integer> list) {
+        dialogRepliesView.startLoading();
         Observable observable = Observable.from(list)
-                .doOnNext(items -> Log.e("loadReplies: ", list.size()+""))
                 .flatMap(id -> apiServices.comment(id))
-                .doOnNext(itemComments -> Log.e("loadReplies: ", itemComments.getId()+""))
                 .filter(items -> {
                     if(!items.isDeleted()){
                         return true;
@@ -46,7 +45,7 @@ class DialogRepliesPresenterImpl implements DialogRepliesPresenter {
                 .subscribe(new Subscriber<List<ItemComments>>() {
                     @Override
                     public void onCompleted() {
-
+                        dialogRepliesView.stopLoading();
                     }
 
                     @Override
@@ -56,7 +55,12 @@ class DialogRepliesPresenterImpl implements DialogRepliesPresenter {
 
                     @Override
                     public void onNext(List<ItemComments> list) {
-                        dialogRepliesView.getItemReplies(list);
+                        Log.e("onNext: ", list.size()+"");
+                        if(list.size() != 0) {
+                            dialogRepliesView.getItemReplies(list);
+                        }else {
+                            dialogRepliesView.getItemFailed();
+                        }
                     }
                 });
     }
