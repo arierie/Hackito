@@ -4,12 +4,19 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.fobid.linkabletext.view.LinkableCallback;
+import com.github.fobid.linkabletext.view.OnLinkClickListener;
+import com.github.fobid.linkabletext.widget.LinkableTextView;
+import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +37,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     private List<ItemComments> mItemComments = new ArrayList<>();
     private ItemComments mData;
-    private Context mContext;
 
     public CommentsAdapter(List<ItemComments> comments) {
         this.mItemComments = comments;
@@ -39,8 +45,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_detail, parent, false);
-        mContext = parent.getContext();
+                .inflate(R.layout.item_comments, parent, false);
         return new ViewHolder(mView);
     }
 
@@ -69,10 +74,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         @BindView(R.id.tv_comment_time)
         TextView tvCommentTime;
         @BindView(R.id.tv_comment)
-        TextView tvComment;
+        LinkableTextView tvComment;
         @BindView(R.id.tv_reply)
         TextView tvReply;
-        Toast mToast = null;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,16 +84,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             tvReply.setOnClickListener(view -> {
                 try {
                     ArrayList list = (ArrayList) mItemComments.get(getAdapterPosition()).getKids();
-                    showEditDialog(list);
+                    showEditDialog(list, itemView.getContext());
                 } catch (Exception e) {
                     Log.e("ViewHolder: ", e.getMessage().toString());
                 }
             });
+            tvComment.setOnLinkClickListener((type, value) -> {
+                if(type == 5)
+                    new FinestWebView.Builder(itemView.getContext()).show(value);
+            });
         }
     }
 
-    private void showEditDialog(ArrayList list) {
-        CommentsActivity activity = (CommentsActivity) mContext;
+    private void showEditDialog(ArrayList list, Context context) {
+        CommentsActivity activity = (CommentsActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager();
         DialogRepliesFragment fragmentReplies = DialogRepliesFragment.newInstance(list);
         fragmentReplies.show(fm, "fragment_replies");

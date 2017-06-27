@@ -41,7 +41,7 @@
             android:textSize="12sp"
             tools:text="2 hours ago" />
 
-        <TextView
+        <com.github.fobid.linkabletext.widget.LinkableTextView
             android:id="@+id/tv_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

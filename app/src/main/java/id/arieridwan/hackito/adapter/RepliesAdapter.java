@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.fobid.linkabletext.widget.LinkableTextView;
+import com.thefinestartist.finestwebview.FinestWebView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +59,15 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         @BindView(R.id.tv_comment_time)
         TextView tvCommentTime;
         @BindView(R.id.tv_comment)
-        TextView tvComment;
+        LinkableTextView tvComment;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            tvComment.setOnLinkClickListener((type, value) -> {
+                if(type == 5)
+                    new FinestWebView.Builder(itemView.getContext()).show(value);
+            });
         }
     }
 
