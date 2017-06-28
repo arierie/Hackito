@@ -15,17 +15,17 @@ Maximal SDK : 25
 ## Libraries
 * Android Support Library 25.3.1
 * Retrofit 2.0.2
-* OkHttp 3.2.0
+* Okhttp 3.2.0
 * Gson 2.6.2
 * Picasso 2.5.2
 * RxJava 1.1.8
 * Retrolambda 3.2.0
 * Dagger 2.9
-* ButterKnife 8.4.0
+* Butterknife 8.4.0
 * FinestWebView 1.2.7
 * LinkableTextView 0.1.4
 * JUnit4
 * Mockito 2.6.8
-* RoboElectric 3.3.2
+* Roboelectric 3.3.2
 * Espresso 2.2.2
 
