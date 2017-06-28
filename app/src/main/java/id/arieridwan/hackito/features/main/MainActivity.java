@@ -1,22 +1,33 @@
-package id.arieridwan.hackito.features.stories;
+package id.arieridwan.hackito.features.main;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import id.arieridwan.hackito.App;
 import id.arieridwan.hackito.R;
 import id.arieridwan.hackito.adapter.StoriesAdapter;
-import id.arieridwan.hackito.base.MvpActivity;
 import id.arieridwan.hackito.models.ItemStories;
 
-public class StoriesActivity extends MvpActivity<StoriesPresenter>
-        implements StoriesView, SwipeRefreshLayout.OnRefreshListener {
+/**
+ * Created by arieridwan on 27/06/2017.
+ */
+
+public class MainActivity extends AppCompatActivity
+        implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -24,6 +35,8 @@ public class StoriesActivity extends MvpActivity<StoriesPresenter>
     RecyclerView rvStories;
     @BindView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
+    @BindView(R.id.main_content)
+    CoordinatorLayout mainContent;
 
     private int startIndex = 0;
     private List<Integer> mTopStories = new ArrayList<>();
@@ -34,17 +47,21 @@ public class StoriesActivity extends MvpActivity<StoriesPresenter>
     private boolean loading = true;
     private int lastVisiblesItem, visibleItemCount, totalItemCount;
 
-    @Override
-    protected StoriesPresenter onCreatePresenter() {
-        return new StoriesPresenter(this);
-    }
+    @Inject
+    MainPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stories);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+
+        DaggerMainComponent.builder()
+                .netComponent(((App) getApplicationContext()).getNetComponent())
+                .mainModule(new MainModule(this))
+                .build().inject(this);
+
         mAdapter = new StoriesAdapter(mItem);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvStories.setHasFixedSize(true);
@@ -72,24 +89,6 @@ public class StoriesActivity extends MvpActivity<StoriesPresenter>
     }
 
     @Override
-    public void callData() {
-        int endIndex = startIndex + 10;
-        if (mTopStories.size() > startIndex && mTopStories.size() > endIndex) {
-            List<Integer> id = new ArrayList<>();
-            for (int i = startIndex; i < endIndex; i++) {
-                id.add(mTopStories.get(i));
-            }
-            presenter.loadItem(id);
-        }
-    }
-
-    @Override
-    public void onRefresh() {
-        startLoading();
-        presenter.loadTopStories();
-    }
-
-    @Override
     public void getTopStories(List<Integer> list) {
         startIndex = 0;
         mTopStories.clear();
@@ -105,6 +104,18 @@ public class StoriesActivity extends MvpActivity<StoriesPresenter>
         startIndex = mItem.size();
     }
 
+
+    private void callData() {
+        int endIndex = startIndex + 10;
+        if (mTopStories.size() > startIndex && mTopStories.size() > endIndex) {
+            List<Integer> id = new ArrayList<>();
+            for (int i = startIndex; i < endIndex; i++) {
+                id.add(mTopStories.get(i));
+            }
+            mPresenter.loadItem(id);
+        }
+    }
+
     @Override
     public void startLoading() {
         swipeLayout.setRefreshing(true);
@@ -112,9 +123,24 @@ public class StoriesActivity extends MvpActivity<StoriesPresenter>
     }
 
     @Override
+    public void stopLoadingError(Throwable e) {
+        swipeLayout.setRefreshing(false);
+        rvStories.setVisibility(View.VISIBLE);
+        loading = true;
+        Snackbar.make(mainContent, R.string.error_main, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.try_again, view -> onRefresh())
+                .show();
+    }
+
+    @Override
     public void stopLoading() {
         swipeLayout.setRefreshing(false);
         rvStories.setVisibility(View.VISIBLE);
         loading = true;
+    }
+
+    @Override
+    public void onRefresh() {
+        mPresenter.loadTopStories();
     }
 }

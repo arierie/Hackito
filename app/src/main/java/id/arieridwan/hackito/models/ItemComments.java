@@ -29,6 +29,10 @@ public class ItemComments implements Parcelable {
         deleted = in.readByte() != 0;
     }
 
+    public ItemComments() {
+
+    }
+
     public static final Creator<ItemComments> CREATOR = new Creator<ItemComments>() {
         @Override
         public ItemComments createFromParcel(Parcel in) {

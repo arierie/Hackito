@@ -1,5 +1,6 @@
 package id.arieridwan.hackito.utils;
 
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -36,9 +37,13 @@ public class StringHelper {
     }
     public static String getHost (String url){
         try {
-            URL url_transform = new URL(url);
-            String domain = url_transform.getHost();
-            return  domain.startsWith("www.") ? domain.substring(4) : domain;
+            if(url != null || !TextUtils.isEmpty(url)) {
+                URL url_transform = new URL(url);
+                String domain = url_transform.getHost();
+                return domain.startsWith("www.") ? domain.substring(4) : domain;
+            } else {
+                return "-";
+            }
         }
         catch (MalformedURLException e) {
             Log.e("getHost: ", e.getMessage().toString());

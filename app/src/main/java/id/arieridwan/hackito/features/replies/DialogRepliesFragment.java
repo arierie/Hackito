@@ -106,19 +106,23 @@ public class DialogRepliesFragment extends DialogFragment implements DialogRepli
 
     @Override
     public void getItemReplies(List<ItemComments> list) {
-        mList.addAll(list);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void getItemFailed() {
-        tvLabel.setText(R.string.no_replies);
+        if(list.size() != 0) {
+            mList.addAll(list);
+            mAdapter.notifyDataSetChanged();
+        }else {
+            startLoadingError(new Exception("List is empty"));
+        }
     }
 
     @Override
     public void startLoading() {
         progressview.setVisibility(View.VISIBLE);
         rvReplies.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void startLoadingError(Throwable e) {
+        tvLabel.setText(R.string.no_replies);
     }
 
     @Override

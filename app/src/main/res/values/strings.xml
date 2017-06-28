@@ -4,4 +4,7 @@
     <string name="loading_text">Loading data..</string>
     <string name="error_text">Oops, something happened..</string>
     <string name="no_replies">No replies yet</string>
+    <string name="error_main">Failed to connect to the server</string>
+    <string name="try_again">Try again</string>
+    <string name="url_empy">Url is empty</string>
 </resources>

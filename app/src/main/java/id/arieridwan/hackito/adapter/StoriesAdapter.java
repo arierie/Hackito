@@ -3,6 +3,7 @@ package id.arieridwan.hackito.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.arieridwan.hackito.R;
-import id.arieridwan.hackito.features.comments.CommentsActivity;
+import id.arieridwan.hackito.features.detail.DetailActivity;
 import id.arieridwan.hackito.models.ItemStories;
 import id.arieridwan.hackito.utils.Constants;
 import id.arieridwan.hackito.utils.StringHelper;
@@ -34,7 +35,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_stories, parent, false);
+                .inflate(R.layout.item_main, parent, false);
         mContext = parent.getContext();
         return new ViewHolder(mView);
     }
@@ -68,7 +69,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
     }
 
     private void movetoDetail(){
-        Intent i = new Intent(mContext, CommentsActivity.class);
+        Intent i = new Intent(mContext, DetailActivity.class);
         i.putExtra(Constants.COMMENT, mData);
         mContext.startActivity(i);
     }
@@ -92,8 +93,12 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(view -> {
-                mData = mList.get(getAdapterPosition());
-                movetoDetail();
+                try {
+                    mData = mList.get(getAdapterPosition());
+                    movetoDetail();
+                } catch (Exception e){
+                    Log.e("ViewHolder: ", e.getMessage().toString());
+                }
             });
         }
     }

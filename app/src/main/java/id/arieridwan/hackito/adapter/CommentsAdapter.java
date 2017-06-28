@@ -4,27 +4,19 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.style.URLSpan;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.github.fobid.linkabletext.view.LinkableCallback;
-import com.github.fobid.linkabletext.view.OnLinkClickListener;
 import com.github.fobid.linkabletext.widget.LinkableTextView;
 import com.thefinestartist.finestwebview.FinestWebView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.arieridwan.hackito.R;
-import id.arieridwan.hackito.features.comments.CommentsActivity;
+import id.arieridwan.hackito.features.detail.DetailActivity;
 import id.arieridwan.hackito.features.replies.DialogRepliesFragment;
 import id.arieridwan.hackito.models.ItemComments;
 import id.arieridwan.hackito.utils.StringHelper;
@@ -45,7 +37,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_comments, parent, false);
+                .inflate(R.layout.item_detail, parent, false);
         return new ViewHolder(mView);
     }
 
@@ -97,7 +89,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     private void showEditDialog(ArrayList list, Context context) {
-        CommentsActivity activity = (CommentsActivity) context;
+        DetailActivity activity = (DetailActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager();
         DialogRepliesFragment fragmentReplies = DialogRepliesFragment.newInstance(list);
         fragmentReplies.show(fm, "fragment_replies");
