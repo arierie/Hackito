@@ -40,8 +40,11 @@ public class MainActivity extends AppCompatActivity
     CoordinatorLayout mainContent;
 
     private int startIndex = 0;
+    // primary
     private List<Integer> mTopStories = new ArrayList<>();
     private List<ItemStories> mItem = new ArrayList<>();
+    // temporary
+    private List mTempItem = new ArrayList();
     private StoriesAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
@@ -90,19 +93,32 @@ public class MainActivity extends AppCompatActivity
                 .build().inject(this);
     }
 
+    // mTempItem = 0
+    // mItem = 0
+
     @Override
     public void getTopStories(List<Integer> list) {
         startIndex = 0;
         mTopStories.clear();
-        mItem.clear();
+        // temp item
+        mTempItem.clear(); // mItem = 0
+        Log.d("getTopStories: ", mItem.size()+""); // mItem = 10
+        mTempItem = mItem; // mTempItem = 10
+        Log.d("getTopStories: ", mTempItem.size()+"");
+        mItem.clear(); // mItem = 0
+        Log.d("getTopStories: ", mItem.size()+"");
         mTopStories.addAll(list);
+        mAdapter.notifyDataSetChanged();
         callData();
     }
 
     @Override
     public void getItem(List<ItemStories> list) {
-        mItem.addAll(list);
-        Log.e("getItem: ", mItem.size()+"");
+        mTempItem.addAll(list); // mTempItem = 10
+        Log.d("getItem: ", mTempItem.size()+"");
+        mItem = mTempItem;
+        Log.d("getItem: ", mItem.size()+""); // mItem = 10
+        Log.d("getItem: ", mTempItem.size()+""); // mTempItem = 10
         mAdapter.notifyDataSetChanged();
         startIndex = mItem.size();
     }
@@ -122,7 +138,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void startLoading() {
         swipeLayout.setRefreshing(true);
-        rvStories.setVisibility(View.INVISIBLE);
+//        rvStories.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -138,7 +154,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void stopLoading() {
         swipeLayout.setRefreshing(false);
-        rvStories.setVisibility(View.VISIBLE);
+//        rvStories.setVisibility(View.VISIBLE);
         loading = true;
     }
 

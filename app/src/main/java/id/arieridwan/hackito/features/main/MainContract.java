@@ -7,7 +7,7 @@ import id.arieridwan.hackito.models.ItemStories;
  * Created by arieridwan on 27/06/2017.
  */
 
-public class MainContract {
+public interface  MainContract {
 
     interface View {
         void getTopStories(List<Integer> list);

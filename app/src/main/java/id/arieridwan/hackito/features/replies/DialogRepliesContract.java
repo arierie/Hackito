@@ -7,7 +7,7 @@ import id.arieridwan.hackito.models.ItemComments;
  * Created by arieridwan on 06/07/2017.
  */
 
-public interface DialogRepliesContract {
+public interface  DialogRepliesContract {
     interface View {
         void getItemReplies(List<ItemComments> list);
         void startLoading();

@@ -9,7 +9,7 @@ import id.arieridwan.hackito.models.ItemStories;
  * Created by arieridwan on 27/06/2017.
  */
 
-public class DetailContract {
+public interface  DetailContract {
 
     interface View {
         void getItemComments(List<ItemComments> list);
