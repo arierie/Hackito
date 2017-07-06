@@ -38,51 +38,51 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class DialogRepliesPresenterImplTest {
 
-    @Mock
-    private DialogRepliesView view;
-    @Mock
-    private ApiServices apiServices;
-
-    private DialogRepliesPresenter presenter;
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        // Override RxJava schedulers
-        RxJavaHooks.setOnNewThreadScheduler(new Func1<Scheduler, Scheduler>() {
-            @Override
-            public Scheduler call(Scheduler scheduler) {
-                return Schedulers.immediate();
-            }
-        });
-
-        final RxAndroidPlugins rxAndroidPlugins = RxAndroidPlugins.getInstance();
-        rxAndroidPlugins.registerSchedulersHook(new RxAndroidSchedulersHook() {
-            @Override
-            public Scheduler getMainThreadScheduler() {
-                return Schedulers.immediate();
-            }
-        });
-        presenter = new DialogRepliesPresenterImpl(view, apiServices);
-    }
-
-    @Test
-    public void tesLoadReplies() throws Exception {
-        ItemComments itemComments = Mockito.mock(ItemComments.class);
-        List<Integer> integers = new ArrayList<>();
-        List<ItemComments> itemCommentsList = new ArrayList<>();
-        when(apiServices.comment(anyInt())).thenReturn(Observable.just(itemComments));
-        presenter.loadReplies(integers);
-        // verify user interaction
-        verify(view, times(1)).startLoading();
-        verify(view, times(1)).getItemReplies(itemCommentsList);
-        verify(view, times(1)).stopLoading();
-        verify(view, never()).startLoadingError(new Exception("some error"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        RxJavaHooks.reset();
-        RxAndroidPlugins.getInstance().reset();
-    }
+//    @Mock
+//    private DialogRepliesView view;
+//    @Mock
+//    private ApiServices apiServices;
+//
+//    private DialogRepliesPresenter presenter;
+//
+//    @Before
+//    public void setUp() throws Exception {
+//        MockitoAnnotations.initMocks(this);
+//        // Override RxJava schedulers
+//        RxJavaHooks.setOnNewThreadScheduler(new Func1<Scheduler, Scheduler>() {
+//            @Override
+//            public Scheduler call(Scheduler scheduler) {
+//                return Schedulers.immediate();
+//            }
+//        });
+//
+//        final RxAndroidPlugins rxAndroidPlugins = RxAndroidPlugins.getInstance();
+//        rxAndroidPlugins.registerSchedulersHook(new RxAndroidSchedulersHook() {
+//            @Override
+//            public Scheduler getMainThreadScheduler() {
+//                return Schedulers.immediate();
+//            }
+//        });
+//        presenter = new DialogRepliesPresenterImpl(view, apiServices);
+//    }
+//
+//    @Test
+//    public void tesLoadReplies() throws Exception {
+//        ItemComments itemComments = Mockito.mock(ItemComments.class);
+//        List<Integer> integers = new ArrayList<>();
+//        List<ItemComments> itemCommentsList = new ArrayList<>();
+//        when(apiServices.comment(anyInt())).thenReturn(Observable.just(itemComments));
+//        presenter.loadReplies(integers);
+//        // verify user interaction
+//        verify(view, times(1)).startLoading();
+//        verify(view, times(1)).getItemReplies(itemCommentsList);
+//        verify(view, times(1)).stopLoading();
+//        verify(view, never()).startLoadingError(new Exception("some error"));
+//    }
+//
+//    @After
+//    public void tearDown() throws Exception {
+//        RxJavaHooks.reset();
+//        RxAndroidPlugins.getInstance().reset();
+//    }
 }

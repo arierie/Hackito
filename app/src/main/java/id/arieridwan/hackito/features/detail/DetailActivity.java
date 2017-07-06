@@ -76,10 +76,7 @@ public class DetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        DaggerDetailComponent.builder()
-                .netComponent(((App) getApplicationContext()).getNetComponent())
-                .detailModule(new DetailModule(this))
-                .build().inject(this);
+        initInjector();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -93,6 +90,13 @@ public class DetailActivity extends AppCompatActivity
         rvComment.setAdapter(mAdapter);
         rvComment.setHasFixedSize(true);
         rvComment.setLayoutManager(mLayoutManager);
+    }
+
+    private void initInjector() {
+        DaggerDetailComponent.builder()
+                .netComponent(((App) getApplicationContext()).getNetComponent())
+                .detailModule(new DetailModule(this))
+                .build().inject(this);
     }
 
     @Override

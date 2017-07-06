@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -56,12 +57,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        DaggerMainComponent.builder()
-                .netComponent(((App) getApplicationContext()).getNetComponent())
-                .mainModule(new MainModule(this))
-                .build().inject(this);
-
+        initInjector();
         mAdapter = new StoriesAdapter(mItem);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvStories.setHasFixedSize(true);
@@ -69,7 +65,6 @@ public class MainActivity extends AppCompatActivity
         rvStories.setLayoutManager(mLayoutManager);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.post(() -> onRefresh());
-
         rvStories.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -88,6 +83,13 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void initInjector() {
+        DaggerMainComponent.builder()
+                .netComponent(((App) getApplicationContext()).getNetComponent())
+                .mainModule(new MainModule(this))
+                .build().inject(this);
+    }
+
     @Override
     public void getTopStories(List<Integer> list) {
         startIndex = 0;
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void getItem(List<ItemStories> list) {
         mItem.addAll(list);
+        Log.e("getItem: ", mItem.size()+"");
         mAdapter.notifyDataSetChanged();
         startIndex = mItem.size();
     }

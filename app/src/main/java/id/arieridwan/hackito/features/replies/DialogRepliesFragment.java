@@ -19,20 +19,22 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import id.arieridwan.hackito.App;
 import id.arieridwan.hackito.R;
 import id.arieridwan.hackito.adapter.RepliesAdapter;
 import id.arieridwan.hackito.models.ItemComments;
-import id.arieridwan.hackito.network.ApiClient;
-import id.arieridwan.hackito.network.ApiServices;
 import id.arieridwan.hackito.utils.Constants;
 
 /**
  * Created by arieridwan on 26/06/2017.
  */
 
-public class DialogRepliesFragment extends DialogFragment implements DialogRepliesView {
+public class DialogRepliesFragment extends DialogFragment
+        implements DialogRepliesContract.View {
 
     @BindView(R.id.rv_replies)
     RecyclerView rvReplies;
@@ -40,11 +42,13 @@ public class DialogRepliesFragment extends DialogFragment implements DialogRepli
     RelativeLayout progressview;
     @BindView(R.id.tv_label)
     TextView tvLabel;
+
     private List<ItemComments> mList = new ArrayList<>();
     private RepliesAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private DialogRepliesPresenter presenter;
-    private ApiServices apiServices;
+
+    @Inject
+    DialogRepliesPresenter presenter;
 
     public DialogRepliesFragment() {
 
@@ -78,12 +82,11 @@ public class DialogRepliesFragment extends DialogFragment implements DialogRepli
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initInjector();
         mAdapter = new RepliesAdapter(mList);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvReplies.setAdapter(mAdapter);
         rvReplies.setLayoutManager(mLayoutManager);
-        apiServices = ApiClient.getRetrofit().create(ApiServices.class);
-        presenter = new DialogRepliesPresenterImpl(this, apiServices);
         try {
             List<Integer> integers = getArguments().getIntegerArrayList(Constants.COMMENT);
             if (integers != null) {
@@ -97,6 +100,13 @@ public class DialogRepliesFragment extends DialogFragment implements DialogRepli
         } catch (Exception e) {
             Log.e("onViewCreated: ", e.getMessage().toString());
         }
+    }
+
+    private void initInjector() {
+        DaggerDialogRepliesComponent.builder()
+                .netComponent(((App) getActivity().getApplicationContext()).getNetComponent())
+                .dialogRepliesModule(new DialogRepliesModule(this))
+                .build().inject(this);
     }
 
     private void noReplies(){
