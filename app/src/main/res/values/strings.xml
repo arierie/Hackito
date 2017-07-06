@@ -7,4 +7,6 @@
     <string name="error_main">Failed to connect to the server</string>
     <string name="try_again">Try again</string>
     <string name="url_empy">Url is empty</string>
+    <string name="back_notice">Please click BACK again to exit or</string>
+    <string name="exit">EXIT</string>
 </resources>

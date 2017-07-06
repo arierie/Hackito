@@ -1,6 +1,7 @@
 package id.arieridwan.hackito.features.main;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity
 
     private boolean loading = true;
     private int lastVisiblesItem, visibleItemCount, totalItemCount;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Inject
     MainPresenter mPresenter;
@@ -138,7 +141,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void startLoading() {
         swipeLayout.setRefreshing(true);
-//        rvStories.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -154,7 +156,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void stopLoading() {
         swipeLayout.setRefreshing(false);
-//        rvStories.setVisibility(View.VISIBLE);
         loading = true;
     }
 
@@ -162,4 +163,18 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh() {
         mPresenter.loadTopStories();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Snackbar.make(mainContent, R.string.back_notice, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.exit, view -> super.onBackPressed())
+                .show();
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+    }
+
 }

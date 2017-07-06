@@ -20,17 +20,21 @@
             android:screenOrientation="sensor"
             android:theme="@style/FinestWebViewTheme.Light" />
         <activity
+            android:name=".features.splash.SplashActivity"
             android:configChanges="orientation|screenSize"
-            android:name=".features.main.MainActivity">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name=".features.detail.DetailActivity">
+            android:name=".features.main.MainActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
+            android:name=".features.detail.DetailActivity"
+            android:configChanges="orientation|screenSize">
         </activity>
     </application>
 
