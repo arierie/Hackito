@@ -5,6 +5,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import id.arieridwan.hackito.BuildConfig;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -27,11 +32,15 @@ public class StringHelperTest {
 
     @Test
     public void tesGetRelativeTimeStatic() throws Exception {
-        // static case
-        long timeStamp = 1498633548;
-        String staticResult = "in 5 hours";
+        // static case with jakarta time
+        long timeStamp = 878068800;
+        // it will not change again, the timezone for test is fix
+        String staticResult = "Oct 28, 1997";
         String staticTestResult = StringHelper.getRelativeTime(timeStamp);
-        assertThat(staticTestResult, is(staticResult));
+        TimeZone tz = TimeZone.getDefault();
+        if(tz.getID().contains("Jakarta")){
+            assertThat(staticTestResult, is(staticResult));
+        }
     }
 
     @Test
